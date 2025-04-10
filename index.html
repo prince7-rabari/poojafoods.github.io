@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pooja Food - Wholesale Namkeen</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lobster&family=Poppins:wght@400;600&family=Playfair+Display:wght@600&display=swap">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f4f0;
+    }
+    header {
+      background-color: #d30d2b;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      font-family: 'Lobster', cursive;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      padding: 40px;
+    }
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+    .product-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin: 15px;
+      padding: 20px;
+      width: 280px;
+      text-align: center;
+    }
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .product-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .product-price {
+      color: #d30d2b;
+      font-size: 18px;
+      margin-top: 5px;
+    }
+    button {
+      background-color: #ff4757;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #d30d2b;
+    }
+    .cart-section {
+      margin-top: 40px;
+    }
+    .cart-item {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+    .cart-total {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    select, input[type='text'] {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Pooja Foods</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#products">Products</a>
+      <a href="#cart">Cart</a>
+      <a href="#checkout">Checkout</a>
+    </nav>
+  </header>
+
+  <div class="container" id="products">
+    <h2>Our Products</h2>
+    <div class="products" id="product-list"></div>
+  </div>
+
+  <div class="container cart-section" id="cart">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <p class="cart-total">Total: ₹<span id="cart-total">0</span></p>
+    <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+  </div>
+
+  <div class="container" id="checkout">
+    <h2>Checkout</h2>
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="Enter your full name">
+    <label for="address">Address</label>
+    <input type="text" id="address" placeholder="Enter your address">
+    <label for="contact">contact</label>
+    <input type="text" id="contact" placeholder="enter contact number">
+    <br>
+
+    <label for="payment">Select Payment Method</label>
+    <select id="payment">
+      <option value="credit">Credit Card</option>
+      <option value="debit">Debit Card</option>
+      <option value="upi">UPI</option>
+      <option value="cod">Cash on Delivery</option>
+    </select>
+    <button onclick="confirmOrder()">Confirm Order</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: 'CHANA CHOR', price: 140, image: 'chanachor.jpg' },
+      
+      { name: 'MASAALA CHANA', price: 130, image: 'chana.jpeg' },
+      { name: 'VATANA', price: 130, image: 'vatana.jpg' },
+      
+      { name: 'BHAKARVADI', price: 140, image: 'bhakar.jpeg' },
+      { name: 'FULLVADI', price: 170, image: 'ful.jpeg' },
+     
+    ];
+
+    const cart = [];
+
+    function renderProducts() {
+      const productList = document.getElementById('product-list');
+      products.forEach(product => {
+        productList.innerHTML += `
+          <div class="product-card">
+            <img src="${product.image}" alt="${product.name}">
+            <div class="product-title">${product.name}</div>
+            <div class="product-price">1KG - ₹${product.price}</div>
+            <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+          </div>`;
+      });
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      updateCart();
+    }
+
+    function updateCart() {
+      const cartItems = document.getElementById('cart-items');
+      const cartTotal = document.getElementById('cart-total');
+      cartItems.innerHTML = '';
+      let total = 0;
+
+      cart.forEach(item => {
+        cartItems.innerHTML += `<div class='cart-item'><span>${item.name}</span><span>₹${item.price}</span></div>`;
+        total += item.price;
+      });
+      cartTotal.textContent = total;
+    }
+
+    function proceedToCheckout() {
+      alert('Proceeding to Checkout');
+      location.href = '#checkout';
+    }
+
+    function confirmOrder() {
+      const name = document.getElementById('name').value;
+      const address = document.getElementById('address').value;
+      const payment = document.getElementById('payment').value;
+      const contact = document.getElementById('contact').value;
+      alert(`Thank you, ${name}! Your order will be delivered to ${address}. Payment Method: ${payment}.contact number : ${contact}`);
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
